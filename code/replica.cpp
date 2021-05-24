@@ -29,9 +29,5 @@ cout<<("Execution Time: %.4lf sec", 1.0 * (clock() - ti) / CLOCKS_PER_SEC)<<endl
 */
 
 int main(){
-  ld L=1e-3;
-  ld C=1e-7;
-  ld pi=acos(-1);
-  ld f=3/(5*pi*sqrt(L*C));
-  cout<<f<<endl;
+  
 }

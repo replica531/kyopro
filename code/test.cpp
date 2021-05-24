@@ -28,7 +28,5 @@ cout<<("Execution Time: %.4lf sec", 1.0 * (clock() - ti) / CLOCKS_PER_SEC)<<endl
 */
 
 int main(){
-  string s="100";
-  int t=stoi(s);
-  cout<<t-10;
+  
 }
