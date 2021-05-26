@@ -40,18 +40,15 @@ ll pow(ll x, int n) {
 }
 
 
-long long pow_mod(long long x, long long n, int m) {
-    assert(0 <= n && 1 <= m);
-    if (m == 1) return 0;
-    internal::barrett bt((unsigned int)(m));
-    unsigned int r = 1, y = (unsigned int)(internal::safe_mod(x, m));
-    while (n) {
-        if (n & 1) r = bt.mul(r, y);
-        y = bt.mul(y, y);
+long long modpow(long long a, long long n, long long mod) {
+    long long res = 1;
+    while (n > 0) {
+        if (n & 1) res = res * a % mod;
+        a = a * a % mod;
         n >>= 1;
     }
-    return r;
-}//modmでxのk乗を求める
+    return res;
+}
 
 int main(){
   
