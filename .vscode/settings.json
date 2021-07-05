@@ -83,5 +83,10 @@
         "ios": "cpp",
         "__split_buffer": "cpp"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "terminal.integrated.fontFamily": "monospace",
+    "files.autoSave": "afterDelay",
+    "editor.tabSize": 2,
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.letterSpacing": 1
 }

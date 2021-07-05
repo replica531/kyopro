@@ -63,6 +63,6 @@ struct union_find{//rank,経路圧縮で高速化
 int main(){
   ll n;
   cin>>n;
-  union_find tree(n);
+  union_find tree(n);//nodeの数
   tree.unite(a,b);
 }

@@ -28,5 +28,9 @@ cout<<("Execution Time: %.4lf sec", 1.0 * (clock() - ti) / CLOCKS_PER_SEC)<<endl
 */
 
 int main(){
-  
+  vector<int> a={1,2,3,4,5};
+  a.erase(find(a.begin(),a.end(),9));
+  for(int A:a){
+    print(A);
+  }
 }

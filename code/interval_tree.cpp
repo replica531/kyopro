@@ -31,103 +31,70 @@ std::vector<std::pair<int, int>> tree; //各ノードに対応する区間の左
 std::vector<std::vector<int>> trajlist_in_tree;
 vector<pair<int,int>> trajectories;
 
-void MakeTree(int max_frame){
-	tree.emplace_back(0, max_frame);//フレームは0-indexed
-	int i = 0;
-	while (tree[i].first!=tree[i].second) {
-		int middle = (tree[i].first + tree[i].second) / 2;
-		tree.emplace_back(tree[i].first,middle);
-		tree.emplace_back(middle + 1, tree[i].second);
-		i++;
-	}
-  trajlist_in_tree.resize(tree.size());
+void MakeTree(int video_length) {
+  int tree_length=1;
+  while (tree_length<video_length) {
+    tree_length *= 2;
+  }
+  trajlist_in_tree.resize(tree_length*2);//1-indexed
 }
 
 //幅優先探索で軌跡番号をtree_indexにおいていく
 void SetTrajectoryInTree(int traj_num) {
-	// pair<int,int> traj = trajectories[traj_num];
-	int from = trajectories[traj_num].F;
-	int to = trajectories[traj_num].S;
-	std::queue<int> Q;
-	Q.push(0);
-  // printf("from:%d, to:%d\n",from,to);//debug
-	while (!Q.empty()) {
-		int v = Q.front();
-    // cout<<v<<endl;//debug
-		Q.pop();
-		int middle = (tree[v].first + tree[v].second) / 2;
-		if (from <= tree[v].first&&to>=tree[v].second) {
-			trajlist_in_tree[v].push_back(traj_num);
-		}
-		else if (to <= middle) {
-			Q.push(v * 2 + 1);
-		}
-		else if (from > middle) {
-			Q.push(v * 2 + 2);
-		}
-		else {
-			Q.push(v * 2 + 1);
-			Q.push(v * 2 + 2);
-		}
-	}
+  auto& traj = trajectories[traj_num];
+  int l = traj.first;
+  int r = traj.second;
+  int tree_length = trajlist_in_tree.size() / 2;
+  l += tree_length;
+  r += tree_length+1;
+  while (l != r) {
+    printf("l:%d,r:%d\n",l,r);
+    if (l & 1){
+      trajlist_in_tree[l++].push_back(traj_num);
+    }
+    if (r & 1){
+      trajlist_in_tree[--r].push_back(traj_num);
+    }
+    l /= 2;
+    r /= 2;
+  }
 }
 
 void RemoveTrajectoryFromTree(int traj_num) {
-	// ASSERT(0 <= traj_num && traj_num < static_cast<int>(this->Size()));
-	auto& traj = trajectories[traj_num];
-	int from = traj.F;
-	int to = traj.S;
-	std::queue<int> Q;
-	Q.push(0);
-	while (!Q.empty()) {
-		int v = Q.front();
-		Q.pop();
-		int middle = (tree[v].first + tree[v].second) / 2;
-		if (from <= tree[v].first&&to >= tree[v].second) {
-			for (int i = 0; i < trajlist_in_tree[v].size(); i++) {
-				if (trajlist_in_tree[v][i] == traj_num) {
-					trajlist_in_tree[v].erase(trajlist_in_tree[v].begin() + i);
-				}
-			}
-		}
-		else if (to <= middle) {
-			Q.push(v * 2 + 1);
-		}
-		else if (from > middle) {
-			Q.push(v * 2 + 2);
-		}
-		else {
-			Q.push(v * 2 + 1);
-			Q.push(v * 2 + 2);
-		}
-	}
+  auto& traj = trajectories[traj_num];
+  int l = traj.first;
+  int r = traj.second;
+  int tree_length = trajlist_in_tree.size() / 2;
+  l += tree_length;
+  r += tree_length+1;
+  while (l != r) {
+    printf("l:%d,r:%d\n",l,r);
+    if (l & 1) {
+      printf("l:%d",l);
+      trajlist_in_tree[l].erase(find(trajlist_in_tree[l].begin(), trajlist_in_tree[l].end(), traj_num));
+      l++;
+    }
+    if (r & 1) {
+      r--;
+      printf("r:%d",r);
+      trajlist_in_tree[r].erase(find(trajlist_in_tree[r].begin(), trajlist_in_tree[r].end(), traj_num));
+    }
+    l /= 2;
+    r /= 2;
+  }
 }
 
-std::vector<int> GetTrajectoriesByFrame(int frame){
-	std::vector<int> trajlist_by_frame_state;
-	int i = 0;
-  // printf("frame:%d\n",frame);//debug
-	while (tree[i].first != tree[i].second) {
-    // print(i);//debug
-		for (int traj_num : trajlist_in_tree[i]) {
+std::vector<int> GetTrajectoriesByFrame(int frame) {
+  std::vector<int> trajlist_by_frame_state;
+  int tree_length = trajlist_in_tree.size() / 2;
+  int node = frame + tree_length;
+  while (node) {
+    for (int traj_num : trajlist_in_tree[node]) {
       trajlist_by_frame_state.push_back(traj_num);
-		}
-		int middle = (tree[i].first + tree[i].second) / 2;
-		if (frame <= middle) {
-			i = i * 2 + 1;
-		}
-		else {
-			i = i * 2 + 2;
-		}
-	}
-	for (int traj_num : trajlist_in_tree[i]) {
-    trajlist_by_frame_state.push_back(traj_num);
-	}
-  // for(int traj:trajlist_by_frame_state){
-  //   cout<<traj<<" ";
-  // }
-  // cout<<endl;//debug
-	return trajlist_by_frame_state;
+    }
+    node /= 2;
+  }
+  return trajlist_by_frame_state;
 }
 
 int main(){
@@ -137,9 +104,9 @@ int main(){
   cin>>f;
   cout<<endl;
   //軌跡リストの作成
-  trajectories.emplace_back(1,5);
-  trajectories.emplace_back(5,10);
-  trajectories.emplace_back(7,12);
+  trajectories.emplace_back(0,8);
+  trajectories.emplace_back(1,1);
+  trajectories.emplace_back(2,10);
   //区間木の作成
   MakeTree(f);
   //区間木の確認
@@ -168,9 +135,9 @@ int main(){
     cout<<endl;
   }
   //軌跡を区間木から削除
-  RemoveTrajectoryFromTree(0);
+  RemoveTrajectoryFromTree(1);
   for(int i=0;i<trajlist_in_tree.size();i++){
-    printf("trajlist_in_tree[%d]:",i);
+    printf("Removed:trajlist_in_tree[%d]:",i);
     for(int j=0;j<trajlist_in_tree[i].size();j++){
       cout<<trajlist_in_tree[i][j]<<" ";
     }
