@@ -1,36 +1,39 @@
-#include <bits/stdc++.h>
-using namespace std;
-using ll = long long;
-using ld = long double;
-using vl = vector<ll>;
-using vll = vector<vl>;
-using Pll = pair<ll, ll>;
-#define rep(i,n) for(ll i=0;i<(ll)(n);i++)
-#define Rep(i,j,n) for (ll i=(ll)(j);i<=(ll)(n);++i)
-#define all(v) v.begin(), v.end()
-#define sz(x) ((int) x.size())
-#define pb push_back
-#define mp make_pair
-#define mt make_tuple
-#define F first
-#define S second
-const int MOD = 1e9+7;
-const int mod = 998244353;
-const ll INF = 2e15;
-template<class T> void print(const T& t){ cout << t << endl; }
-template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; } return 0; }
-template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }
-ll gcd(ll a,ll b){return b?gcd(b,a%b):a;}
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 
-/*
-ll ti=clock();
-cout<<("Execution Time: %.4lf sec", 1.0 * (clock() - ti) / CLOCKS_PER_SEC)<<endl;
-*/
+#include <iostream>
+#include <string>
+#include <vector>
 
-int main(){
-  vector<int> a={1,2,3,4,5};
-  a.erase(find(a.begin(),a.end(),9));
-  for(int A:a){
-    print(A);
-  }
-}
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* head = new ListNode(0);
+        ListNode* p = head;
+        int carry = 0;
+        while (l1 != nullptr || l2 != nullptr || carry != 0) {
+            int sum = 0;
+            if (l1 != nullptr) {
+                sum += l1->val;
+                l1 = l1->next;
+            }
+            if (l2 != nullptr) {
+                sum += l2->val;
+                l2 = l2->next;
+            }
+            sum += carry;
+            carry = sum / 10;
+            p->next = new ListNode(sum % 10);
+            p = p->next;
+        }
+        return head->next;
+    }
+};

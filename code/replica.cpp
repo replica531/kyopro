@@ -23,11 +23,21 @@ template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }
 ll gcd(ll a,ll b){return b?gcd(b,a%b):a;}
 
-/*
-ll ti=clock();
-cout<<("Execution Time: %.4lf sec", 1.0 * (clock() - ti) / CLOCKS_PER_SEC)<<endl;
-*/
 
 int main(){
-  
+    ll n;
+    cin >> n;
+    vector<string> s(n);
+    rep(i,n) cin >> s[i];
+    map<string, ll> mp;
+    rep(i,n){
+        if (mp[s[i]] == 0){
+            cout << s[i] << endl;
+            mp[s[i]]++;
+        }else{
+            cout << s[i] << mp[s[i]] << endl;
+            mp[s[i]]++;
+        }
+    }
+    return 0;
 }
