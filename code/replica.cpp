@@ -25,19 +25,5 @@ ll gcd(ll a,ll b){return b?gcd(b,a%b):a;}
 
 
 int main(){
-    ll n;
-    cin >> n;
-    vector<string> s(n);
-    rep(i,n) cin >> s[i];
-    map<string, ll> mp;
-    rep(i,n){
-        if (mp[s[i]] == 0){
-            cout << s[i] << endl;
-            mp[s[i]]++;
-        }else{
-            cout << s[i] << mp[s[i]] << endl;
-            mp[s[i]]++;
-        }
-    }
-    return 0;
+  return 0;
 }
