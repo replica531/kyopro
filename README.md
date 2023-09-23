@@ -6,6 +6,5 @@
 ## ac-library
 Atcoder-library
 # ojツール使い方メモ
-1. フォルダ作成 `oj prepare ${url}`
-1. 
-
+1. フォルダ作成 `oj-prepare ${url}`
+1. test `oj t`
