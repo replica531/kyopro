@@ -85,7 +85,8 @@
     "__bit_reference": "cpp",
     "__hash_table": "cpp",
     "__tree": "cpp",
-    "filesystem": "cpp"
+    "filesystem": "cpp",
+    "__locale": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "terminal.integrated.fontFamily": "HackGen35ConsoleNF, Hack Nerd Font, monospace",
